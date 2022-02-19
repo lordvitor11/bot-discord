@@ -1,4 +1,4 @@
-import discord, asyncio
+import discord #pip install discord
 from discord.ext import commands
 from defs import *
 
@@ -10,22 +10,7 @@ class Cleiton(commands.Bot):
 	def __init__(self):
 		super().__init__(command_prefix = ".", intents = intents, case_insensitive = True, help_command = None)
 
-		#ADM COMMAND ZONE
-
-		self.offruan = False
-
-		#OFF
-		@self.command(name = "off", description = "Desativa o bot(apenas ADM'S)")
-		async def off(ctx):
-			await ctx.channel.send(off_(ctx))
-			quit()
-
-		#MEMBER COMMAND ZONE
-
-		#STATS
-		@self.command(name = "stats", description = "Verifica se o bot está ativo")
-		async def stats(ctx):
-			await ctx.channel.send(stats_(ctx))
+		self.offruan = False #Memezinho pra silenciar o ruan ksdjskjds
 
 		#FATO
 		@self.command(name = "fato", description = "Apresenta um fato aleatório")
@@ -172,9 +157,11 @@ class Cleiton(commands.Bot):
 			else:
 				await ctx.channel.send(ctx.author.mention, embed = help_(ctx, arg))
 
+	#Mudar o status de atividade quando estiver online
 	async def on_ready(self):
 		await self.change_presence(activity = discord.Game(name = ".help"))
-		
+	
+	#Retornar erro quando o comando não for reconhecido
 	async def on_command_error(self, ctx, error):
 		if isinstance(error, commands.CommandNotFound):
 			embed = discord.Embed(title = "[ ERRO ]", description = f"Comando não encontrado. {ctx.author.mention} Digite .help para ver a lista de comandos!", color = ctx.author.color, delete_after=5.0)
@@ -230,9 +217,6 @@ class Cleiton(commands.Bot):
 
 				if message.content.upper().startswith("REBOLA PRA MIM CLEITO"):
 					await message.reply(file=discord.File("./otherfiles/cleitofeliz.mp4"))
-					
-				#if "@everyone Venham ver a live do patrão! https://www.twitch.tv/elkirito_" in message.content:
-				#	await message.reply("<@!314051826288951307> vai amassar hoje, rs")	
 
 				if message.content.upper().startswith("BOM DIA") or message.content.upper().startswith("BOA TARDE") or message.content.upper().startswith("BOA NOITE") or message.content.upper().startswith("BOA MADRUGADA"):
 					a = message.content.split()
@@ -250,10 +234,11 @@ class Cleiton(commands.Bot):
 				if message.content.startswith(prefixes[c]):
 					count += 1
 
+			#Apagar qualquer mensagem que não seja um comando ou que não seja de algum bot
 			if count == 0:
 				if not message.author.id in bots:
 					if message.channel.id == comandos:
 						await message.delete()
 
 bot = Cleiton()
-bot.run(open("token.txt", "r").read())
+bot.run(open("token.txt", "r").read()) #Pegar o token do bot através de um arquivo de texto

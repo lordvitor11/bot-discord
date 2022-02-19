@@ -1,10 +1,11 @@
-import discord, asyncio
-from discord.ext import commands
+import discord #pip install discord
 from random import randint, choice
 from datetime import datetime
 from pytz import timezone
 
 prefixes = ["!", "/", "-", "+", ".", "#", "$"]
+
+#Memes escolhidos pela comunidade do discord
 fatos =  ["Thiago é melhor que o nerd", "KITNET É RUIM", "Milena não tem sal", "O ADM é chato", "Carol é uma delicinha", 
 		  "Ailton pedófilo", "Falta umildad no grupo", "Digite PEDREIRO e veja a mágica acontecer", "Carlin é depressivo",
 		  "As Anas são tão presentes quanto pais de orfãos", "A mãe do Jorge é uma tremenda gostosa", "O ADM bebe leite puro", 
@@ -13,9 +14,7 @@ fatos =  ["Thiago é melhor que o nerd", "KITNET É RUIM", "Milena não tem sal"
 dayStats = [["BOM DIA", 6, 12], ["BOA TARDE", 12, 18], ["BOA NOITE", 18, 24], ["BOA MADRUGADA", 00, 6]]
 
 bots = [547905866255433758, 297153970613387264, 235088799074484224, 282859044593598464, 882772337517285416]
-bots2 = ["<@!882772337517285416>", "<@!547905866255433758>", "<@!297153970613387264>", "<@!282859044593598464>", "<@!235088799074484224>"]
 
-state = False
 adm, subadm, comandos, suggests = 438798320274767882, 314051826288951307, 826961049524895745, 883526463448576050
 
 def calc():
@@ -23,26 +22,6 @@ def calc():
 	porcent = str(porcent) + "%" if porcent == 100 else str(porcent + porcent2) + "%"
 
 	return porcent
-
-def off_(ctx):
-	if ctx.channel.id == comandos:
-		if ctx.author.id == adm or ctx.author.id == subadm:
-			return f"{ctx.author.mention} Encerrando processos..."
-
-def wmention_(ctx):
-	if ctx.author.id == subadm:
-		if state:
-			state = False
-			return "OFF"
-		else:
-			state = True
-			return "ON"
-
-def stats_(ctx):
-	if ctx.channel.id == comandos:
-		return f"{ctx.author.mention} Funcionando, pae!"
-	else:
-		return f"{ctx.author.mention} Comando disponível apenas em {comandos.mention}"
 
 def fato_(ctx):
 	return fatos[randint(0, len(fatos) - 1)]
@@ -56,7 +35,7 @@ def porcent_commands(ctx, arg = "", funct = None):
 				7:"triste"}
 
 	if arg != "":
-		if not arg in bots2:
+		if not int(arg.replace("<@!>")) in bots:
 			if funct != 7:
 				return f"{arg} é {calc()} {commands[funct]}"
 			else:
@@ -82,7 +61,7 @@ def cobrar_(ctx, arg):
 		return f"{ctx.author.mention} Pode deixar, vou cobrar..."
 
 def echo_(ctx, arg, arg2 = ""):
-	if ctx.channel.id != comandos and len(arg) > 0:
+	if len(arg) > 0:
 		for c in range(len(arg)):
 			arg2 += f"{arg[c]} "
 
@@ -90,10 +69,10 @@ def echo_(ctx, arg, arg2 = ""):
 		return arg2
 
 def casal_amor(ctx, arg, arg2, guild, funct):
-	if arg in bots2 or arg2 in bots2:
-		return f"{ctx.author.mention} Bots não podem ser usados neste comando"
-	else:
-		if arg != "" and arg2 != "":
+	if arg != "" and arg2 != "":
+		if int("".join(x for x in arg if x not in "<@!>")) in bots or int("".join(x for x in arg2 if x not in "<@!>")) in bots:
+			return f"{ctx.author.mention} Bots não podem ser usados neste comando"
+		elif arg != "" and arg2 != "":
 			if arg != arg2:
 				if funct == 0:
 					return f"{arg} e {arg2} formam um ótimo casal!"
@@ -105,22 +84,20 @@ def casal_amor(ctx, arg, arg2, guild, funct):
 					return f"{ctx.author.mention} e {arg} formam um ótimo casal!"
 				elif funct == 1:
 					return f"O nível de amor entre {ctx.author.mention} e {arg} é de {calc()}"
-		else:
-			members = []
+	else:
+		members = []
 
-			for member in guild.members:
+		for member in guild.members:
+			if not member.id in bots:
 				members.append(str(member.id))
 
-			while True:
-				escolhido = f"<@!{choice(members)}>"
-				if not escolhido in bots2:
-					if f"<@!{ctx.author.id}>" != escolhido:
-						if funct == 0:
-							return f"{ctx.author.mention} e {escolhido} formam um ótimo casal!"
-							break
-						elif funct == 1:
-							return f"O nível de amor entre {ctx.author.mention} e {escolhido} é de {calc()}"
-							break
+		while True:
+			escolhido = choice(members)
+			if ctx.author.id != escolhido:
+				if funct == 0:
+					return f"{ctx.author.mention} e <@!{escolhido}> formam um ótimo casal!"
+				elif funct == 1:
+					return f"O nível de amor entre {ctx.author.mention} e <@!{escolhido}> é de {calc()}"
 
 def top10(ctx, guild, funct):
 	members, filtred = [], []
@@ -128,13 +105,13 @@ def top10(ctx, guild, funct):
 	embed = discord.Embed(title = f"Top 10 {a} do servidor:", description = "", colour = 11598249)
 
 	for member in guild.members:
-		members.append(str(member.name))
+		if not member.name in ["Loritta", "Hydra", "ProBot ✨", "Rythm", "Cleiton, o portador da verdade"]:
+			members.append(str(member.name))
 
 	while True:
 		escolhido = choice(members)
 		if not escolhido in filtred:
-			if escolhido != "Loritta" and escolhido != "Hydra" and escolhido != "ProBot ✨" and escolhido != "Rythm" and escolhido != "Cleiton, o portador da verdade":
-				filtred.append(escolhido)
+			filtred.append(escolhido)
 
 		if len(filtred) == 10:
 			break
@@ -178,11 +155,11 @@ def checkup_(ctx):
 
 	return embed
 
-def kiss_hug(ctx, arg, funct, NArg2 = ""):
+def kiss_hug(ctx, arg, funct):
 	if arg == "":
 		return f"[ Erro ] {ctx.author.mention} Você deve mencionar alguém nesse comando"
 
-	NArg = int(arg.replace("<", "").replace("@", "").replace("!", "").replace(">", ""))
+	NArg = int("".join(x for x in arg if x not in "<!@>"))
 
 	if ctx.author.id == NArg:
 		if funct == 0:
