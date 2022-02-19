@@ -1,7 +1,6 @@
 import discord, asyncio
 from discord.ext import commands
 from defs import *
-import token
 
 intents = discord.Intents.default()
 intents.members = True
@@ -257,4 +256,4 @@ class Cleiton(commands.Bot):
 						await message.delete()
 
 bot = Cleiton()
-bot.run(open("token.txt", "r"))
+bot.run(open("token.txt", "r").read())
