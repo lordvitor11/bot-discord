@@ -221,6 +221,7 @@ class Cleiton(commands.Bot):
 				if message.content.upper().startswith("BOM DIA") or message.content.upper().startswith("BOA TARDE") or message.content.upper().startswith("BOA NOITE") or message.content.upper().startswith("BOA MADRUGADA"):
 					a = message.content.split()
 					a = f"{a[0].upper()} {a[1].upper()}"
+					a = "".join(e for e in a if e.isalpha() or e.isspace())
 
 					for hour in dayStats:
 						if hora >= hour[1] and hora < hour[2]:

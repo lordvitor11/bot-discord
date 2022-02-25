@@ -35,7 +35,7 @@ def porcent_commands(ctx, arg = "", funct = None):
 				7:"triste"}
 
 	if arg != "":
-		if not int(arg.replace("<@!>")) in bots:
+		if not int("".join(x for x in arg if x not in "<!@>")) in bots:
 			if funct != 7:
 				return f"{arg} é {calc()} {commands[funct]}"
 			else:
@@ -75,13 +75,19 @@ def casal_amor(ctx, arg, arg2, guild, funct):
 		elif arg != "" and arg2 != "":
 			if arg != arg2:
 				if funct == 0:
-					return f"{arg} e {arg2} formam um ótimo casal!"
+					if choice(0, 1) == 0:
+						return f"{arg} e {arg2} formam um ótimo casal!"
+					else:
+						return f"{arg} e {arg2} não formam um bom casal!"
 				elif funct == 1:
 					return f"O nível de amor entre {arg} e {arg2} é de {calc()}"
 		elif arg != "" and arg2 == "":
 			if arg != f"<@!{ctx.author.id}>":
 				if funct == 0:
-					return f"{ctx.author.mention} e {arg} formam um ótimo casal!"
+					if choice(0, 1) == 0:
+						return f"{ctx.author.mention} e {arg} formam um ótimo casal!"
+					else:
+						return f"{ctx.author.mention} e {arg} não formam um bom casal!"
 				elif funct == 1:
 					return f"O nível de amor entre {ctx.author.mention} e {arg} é de {calc()}"
 	else:
