@@ -2,7 +2,7 @@
 
 Um bot para discord que fiz usando python quando tava entediado
 
-![preview](./.github\preview.mp4)
+[preview](https://user-images.githubusercontent.com/65216891/190833935-9252e26e-df2d-4b91-b9d6-b32b753a45d2.mp4)
 
 > Quer testar o bot? [Entre na comunidade onde ele está ativo](https://discord.gg/7KuwsYcQ9F)
 
