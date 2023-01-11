@@ -1,1 +1,0 @@
-cleito: python "main.py"
